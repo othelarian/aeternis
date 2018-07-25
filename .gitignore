@@ -70,3 +70,8 @@ Thumbs.db
 # --------
 *.dll
 *.exe
+
+# -------------------
+# configuration file
+# -------------------
+conf.h
