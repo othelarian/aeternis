@@ -2,5 +2,11 @@
     <qresource prefix="/">
         <file>main.qml</file>
         <file>Components/ActionButton.qml</file>
+        <file>Components/AetherElement.qml</file>
+        <file>Views/AetherListView.qml</file>
+        <file>Views/AetherInfoView.qml</file>
+        <file>Views/AetherColorView.qml</file>
+        <file>Views/AeternityLogo.qml</file>
+        <file>images/Aeternity.png</file>
     </qresource>
 </RCC>

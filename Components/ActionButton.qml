@@ -2,8 +2,10 @@ import QtQuick 2.0
 
 Item  {
     id: actionBtn
-    visible: true
-    width: height
+    height: parent.height
+    width: 140
+    property string activeState
+    visible: parent.state == activeState ? true : false
     property string text: "?"
     property bool lock: false
     signal activate
@@ -14,8 +16,8 @@ Item  {
         State {
             name: "NORMAL"
             when: !actionBtn.lock
-            PropertyChanges { target: actionRect; color: "white" }
-            PropertyChanges { target: actionTxt; color: "black" }
+            PropertyChanges { target: actionRect; color: "black" }
+            PropertyChanges { target: actionTxt; color: "white" }
         },
         State {
             name: "HOVER"
@@ -30,6 +32,12 @@ Item  {
             PropertyChanges { target: actionTxt; color: "#33aaff" }
         },
         State {
+            name: "DISABLE"
+            when: actionBtn.lock
+            PropertyChanges { target: actionRect; color: "grey" }
+            PropertyChanges { target: actionTxt; color: "grey" }
+        },
+        State {
             name: "LOCKED"
             when: actionBtn.lock
             PropertyChanges { target: actionRect; color: "orange" }
@@ -41,13 +49,13 @@ Item  {
     Rectangle {
         id: actionRect
         anchors.fill: parent
-        color: "white"
+        color: "black"
         Text {
             id: actionTxt
             anchors.centerIn: parent
-            color: "black"
+            color: "White"
             font.bold: true
-            font.pointSize: 18
+            font.pointSize: 14
             text: actionBtn.text
         }
         MouseArea {

@@ -1,113 +1,248 @@
 import QtQuick 2.11
 import QtQuick.Window 2.11
+import QtQuick.Controls 2.1
 
 import "Components"
+import "Views"
 
 Window {
     id: win
     width: 480
     height: 640
     visible: true
-    minimumWidth: 480
-    minimumHeight: 640
+    //minimumWidth: 480
+    //minimumHeight: 640
     title: "Aeternity"
 
-    Rectangle {
+    property int stacktime: 500
+    property bool landscape: (win.height*1.1) < win.width
+
+    Rectangle { // ### TITLE ###
         id: stateTitle
         anchors.top: win.top
         anchors.right: parent.right
         anchors.left: parent.left
-        height: 40
+        height: 60
+        color: "black"
         border.color: "gray"
         border.width: 1
         Text {
             id: textTitle
             anchors.centerIn: parent
             horizontalAlignment: Text.AlignHCenter
-            text: "Aeternity"
-            font.pointSize: 13
             verticalAlignment: Text.AlignVCenter
+            color: "#33aaff"
+            text: "Aeternity"
+            font.pointSize: 16
         }
     }
 
-    Rectangle {
-        //
-        // list
-        //
+    StackView { // ### PORTRAIT STACK ###
+        id: mainStack
+        visible: !win.landscape
+        onVisibleChanged: { if (!mainStack.visible) mainStack.pop(null,StackView.Immediate) }
+        anchors.top: stateTitle.bottom
+        anchors.bottom: actionsZone.top
+        anchors.left: parent.left
+        anchors.right: parent.right
+        initialItem: portraitListView
+        Transition {
+            id: enterRight
+            XAnimator {
+                from: (mainStack.mirrored ? -1 : 1)*mainStack.width
+                to: 0
+                duration: win.stacktime
+                easing.type: Easing.OutCubic
+            }
+        }
+        Transition {
+            id: enterLeft
+            XAnimator {
+                from: -(mainStack.mirrored ? -1 : 1)*mainStack.width
+                to: 0
+                duration: win.stacktime
+                easing.type: Easing.OutCubic
+            }
+        }
+        Transition {
+            id: goRight
+            XAnimator {
+                from: 0
+                to: (mainStack.mirrored ? -1 : 1)*mainStack.width
+                duration: win.stacktime
+                easing.type: Easing.OutCubic
+            }
+        }
+        Transition {
+            id: goLeft
+            XAnimator {
+                from: 0
+                to: -(mainStack.mirrored ? -1 : 1)*mainStack.width
+                duration: win.stacktime
+                easing.type: Easing.OutCubic
+            }
+        }
+        pushEnter: enterRight
+        pushExit: goLeft
+        popEnter: enterLeft
+        popExit: goRight
+
+        AetherListView { id: portraitListView }
+        AetherInfoView { id: portraitInfoView }
+        AetherColorView { id: portraitColorView }
     }
 
-    Rectangle {
-        id: scanningVeil
-        visible: false
-        opacity: 0.6
-        //
-        // TODO : this veil show the countdown for the udp handshake
-        //
+    Item { // ### LANDSCAPE STACK ###
+        id: landPanel
+        anchors.top: stateTitle.bottom
+        anchors.bottom: parent.bottom
+        anchors.left: parent.left
+        anchors.right: parent.right
+        visible: win.landscape
+        onVisibleChanged: { if (!landPanel.visible) landStack.pop(null,StackView.Immediate) }
+
+        AetherListView {
+            id: landListView
+            anchors.top: parent.top
+            anchors.bottom: parent.bottom
+            anchors.bottomMargin: actionsZone.height
+            anchors.left: parent.left
+            width: parent.width * 0.4
+        }
+        StackView {
+            id: landStack
+            anchors.top: parent.top
+            anchors.bottom: parent.bottom
+            anchors.right: parent.right
+            width: parent.width * 0.6
+            initialItem: landLogo
+
+            AeternityLogo { id: landLogo }
+            AetherInfoView {
+                id: landInfo
+                closer: true
+                //
+                // TODO : configure Info
+                //
+            }
+            AetherColorView {
+                id: landColor
+                //
+                // TODO : configure color
+                //
+            }
+        }
     }
 
-    Rectangle {
+    Rectangle { // ### ACTION BUTTONS ###
         id: actionsZone
         anchors.bottom: parent.bottom
-        anchors.right: parent.right
         anchors.left: parent.left
-        height: 60
+        width: parent.width
+        height: 40
         border.color: "gray"
         border.width: 1
+        color: "black"
+        state: win.landscape ? "LANDSCAPE" : "PORTRAIT"
+
+        states: [
+            State {
+                name: "LANDSCAPE"
+                PropertyChanges { target: actionsZone; width: parent.width * 0.4 }
+                PropertyChanges { target: actionRow; state: "LIST" }
+            },
+            State {
+                name: "PORTRAIT"
+                PropertyChanges { target: actionsZone; width: parent.width }
+                PropertyChanges { target: actionRow; state: "LIST" }
+            }
+        ]
 
         Row {
-            id: row
+            id: actionRow
             anchors.horizontalCenter: parent.horizontalCenter
             anchors.top: parent.top
-            anchors.topMargin: 1
             anchors.bottom: parent.bottom
+            anchors.topMargin: 1
             anchors.bottomMargin: 1
             spacing: 2
-            state: "HOME"
+            state: "LIST"
 
             states: [
-                State {
-                    name: "HOME"
-                    //
-                    //
-                }
-
+                State { name: "LIST" },
+                State { name: "INFO" },
+                State { name: "COLOR" }
             ]
 
-            ActionButton {
-                id: actionTest
-                text: "?"
-                height: parent.height
-                //
-                // TODO : ???
-                //
-            }
+            // ### LIST CONTROLS ###
 
             ActionButton {
-                id: actionScan
-                text: "S"
-                height: parent.height
+                id: actionListScan
+                activeState: "LIST"
+                text: "Scan"
+                onActivate: {
+                    lock = true
+                    actionListScan.state = "ACTIVE"
+                    //
+                    // TODO : lock the list !!!!!!!!!
+                    //
+                    udpComm.toggleScan()
+                    scanTimer.start()
+                }
+
+                Timer {
+                    id: scanTimer
+                    interval: 3000
+                    running: false
+                    repeat: false
+                    onTriggered: {
+                        actionListScan.lock = false
+                        actionListScan.state = "NORMAL"
+                        //
+                        // TODO : unlock the list
+                        //
+                        udpComm.toggleScan()
+                    }
+                }
+            }
+
+            // ### INFO CONTROLS ###
+
+            ActionButton {
+                id: actionInfoBack
+                activeState: "INFO"
+                text: "Back"
+                onActivate: {
+                    actionRow.state = "LIST"
+                    mainStack.pop(portraitListView)
+                }
+            }
+
+            // ### COLOR CONTROLS ###
+
+            ActionButton {
+                id: actionColorApply
+                activeState: "COLOR"
+                text: "Apply"
                 onActivate: {
                     //
+                    // TODO : ???
                     //
+                }
+            }
+            ActionButton {
+                id: actionColorBack
+                activeState: "COLOR"
+                text: "Back"
+                onActivate: {
+                    actionRow.state = "LIST"
                     //
-                    console.log("activation !")
+                    // TODO : evolution needed
                     //
-                    // TODO : update the list screen
-                    // TODO : refresh the list ?
-                    //
-                    // TODO : change the state of the Rectangle
-                    // TODO : activate the UDP handshake
-                    //
-                    lock = true
-                    //
-                    //
-                    udpComm.startRequest()
-                    //
+                    mainStack.pop(portraitInfoView)
                 }
             }
         }
-        //
-        //
     }
 
     // TODO : list of detected aether

@@ -2,7 +2,7 @@
 #include <QQmlApplicationEngine>
 #include <QQmlContext>
 
-#include "conf.h"
+//#include "conf.h"
 #include "classes/udpcomm.h"
 
 int main(int argc, char *argv[])
@@ -14,7 +14,8 @@ int main(int argc, char *argv[])
     QCoreApplication::setApplicationVersion("0.1.0");
     QCoreApplication::setOrganizationName("Othy Software");
 
-    auto udpComm = new UdpComm;
+    qmlRegisterType<AetherConn>("Aethers", 1, 0, "AetherConn");
+    UdpComm* udpComm = new UdpComm;
 
     QQmlApplicationEngine engine;
     engine.rootContext()->setContextProperty("udpComm", udpComm);

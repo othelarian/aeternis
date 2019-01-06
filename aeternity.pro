@@ -1,4 +1,4 @@
-QT += quick core network
+QT += qml quick core network
 CONFIG += c++11
 
 # The following define makes your compiler emit warnings if you use
@@ -13,8 +13,8 @@ DEFINES += QT_DEPRECATED_WARNINGS
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
-        main.cpp \
-    classes/udpcomm.cpp
+    classes/udpcomm.cpp \
+    main.cpp
 
 RESOURCES += qml.qrc
 
@@ -30,8 +30,21 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
 DISTFILES += \
-    .gitignore
+    .gitignore \
+    images/Aeternity.png \
+    android/AndroidManifest.xml \
+    android/gradle/wrapper/gradle-wrapper.jar \
+    android/gradlew \
+    android/res/values/libs.xml \
+    android/build.gradle \
+    android/gradle/wrapper/gradle-wrapper.properties \
+    android/gradlew.bat
 
 HEADERS += \
     classes/udpcomm.h \
     conf.h
+
+contains(ANDROID_TARGET_ARCH,armeabi-v7a) {
+    ANDROID_PACKAGE_SOURCE_DIR = \
+        $$PWD/android
+}
