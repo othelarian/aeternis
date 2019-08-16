@@ -3,7 +3,7 @@
                                                    xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:tools="http://schemas.android.com/tools"
                                                    android:layout_width="match_parent"
                                                    android:layout_height="match_parent"
-                                                   tools:context=".Fragments.ListFragment">
+                                                   tools:context=".fragments.ListFragment">
     <TextView
             android:text="@string/list_devices_title"
             android:layout_height="wrap_content" android:id="@+id/list_devices_title"

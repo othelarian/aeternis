@@ -3,29 +3,29 @@
             xmlns:app="http://schemas.android.com/apk/res-auto"
             xmlns:tools="http://schemas.android.com/tools" android:id="@+id/nav_graph"
             app:startDestination="@id/welcome">
-    <dialog android:id="@+id/welcome" android:name="inc.othy.aeternity.Fragments.WelcomeFragment"
+    <fragment android:id="@+id/welcome" android:name="inc.othy.aeternity.fragments.WelcomeFragment"
             android:label="fragment_welcome" tools:layout="@layout/fragment_welcome">
         <action android:id="@+id/gotolist" app:destination="@id/list"/>
-    </dialog>
-    <dialog android:id="@+id/settings" android:name="inc.othy.aeternity.Fragments.SettingsFragment"
+    </fragment>
+    <dialog android:id="@+id/settings" android:name="inc.othy.aeternity.fragments.SettingsFragment"
             android:label="fragment_settings" tools:layout="@layout/fragment_settings">
         <action android:id="@+id/action_settingsFragment_to_colorFragment" app:destination="@id/color"/>
         <action android:id="@+id/action_settingsFragment_to_designModeFragment"
                 app:destination="@id/designMode"/>
     </dialog>
-    <dialog android:id="@+id/color" android:name="inc.othy.aeternity.Fragments.ColorFragment"
+    <dialog android:id="@+id/color" android:name="inc.othy.aeternity.fragments.ColorFragment"
             android:label="fragment_color" tools:layout="@layout/fragment_color"/>
-    <dialog android:id="@+id/list" android:name="inc.othy.aeternity.Fragments.ListFragment"
+    <dialog android:id="@+id/list" android:name="inc.othy.aeternity.fragments.ListFragment"
             android:label="fragment_list" tools:layout="@layout/fragment_list">
         <action android:id="@+id/gotosettings" app:destination="@id/settings"/>
         <action android:id="@+id/action_list_to_list_designMode" app:destination="@id/list_designMode"/>
     </dialog>
-    <dialog android:id="@+id/designMode" android:name="inc.othy.aeternity.Fragments.DesignModeFragment"
+    <dialog android:id="@+id/designMode" android:name="inc.othy.aeternity.fragments.DesignModeFragment"
             android:label="fragment_design_mode" tools:layout="@layout/fragment_design_mode">
         <action android:id="@+id/action_designModeFragment_to_stepDesignFragment"
                 app:destination="@id/stepDesign"/>
     </dialog>
-    <dialog android:id="@+id/stepDesign" android:name="inc.othy.aeternity.Fragments.StepDesignFragment"
+    <dialog android:id="@+id/stepDesign" android:name="inc.othy.aeternity.fragments.StepDesignFragment"
             android:label="fragment_step_design" tools:layout="@layout/fragment_step_design">
         <action android:id="@+id/action_stepDesignFragment_to_colorFragment" app:destination="@id/color"/>
     </dialog>

@@ -1,9 +1,9 @@
-package inc.othy.aeternity.Fragments
+package inc.othy.aeternity.fragments
 
 import android.content.Context
 import android.net.Uri
 import android.os.Bundle
-import android.support.v4.app.Fragment
+import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,16 +16,7 @@ import inc.othy.aeternity.R
 private const val ARG_PARAM1 = "param1"
 private const val ARG_PARAM2 = "param2"
 
-/**
- * A simple [Fragment] subclass.
- * Activities that contain this fragment must implement the
- * [DesignModeFragment.OnFragmentInteractionListener] interface
- * to handle interaction events.
- * Use the [DesignModeFragment.newInstance] factory method to
- * create an instance of this fragment.
- *
- */
-class DesignModeFragment : DialogFragment() {
+class ColorFragment : DialogFragment() {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
@@ -44,7 +35,7 @@ class DesignModeFragment : DialogFragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_design_mode, container, false)
+        return inflater.inflate(R.layout.fragment_color, container, false)
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -57,7 +48,7 @@ class DesignModeFragment : DialogFragment() {
         if (context is OnFragmentInteractionListener) {
             listener = context
         } else {
-            throw RuntimeException(context.toString() + " must implement OnFragmentInteractionListener")
+            throw RuntimeException(context.toString() + " must implement OnWelcomeFIL")
         }
     }
 
@@ -89,12 +80,12 @@ class DesignModeFragment : DialogFragment() {
          *
          * @param param1 Parameter 1.
          * @param param2 Parameter 2.
-         * @return A new instance of fragment DesignModeFragment.
+         * @return A new instance of fragment ColorFragment.
          */
         // TODO: Rename and change types and number of parameters
         @JvmStatic
         fun newInstance(param1: String, param2: String) =
-            DesignModeFragment().apply {
+            ColorFragment().apply {
                 arguments = Bundle().apply {
                     putString(ARG_PARAM1, param1)
                     putString(ARG_PARAM2, param2)

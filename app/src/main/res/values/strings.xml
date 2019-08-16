@@ -1,7 +1,12 @@
 <resources>
     <string name="app_name">Aeternity</string>
-
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="list_devices_title">List of Aethers linked</string>
+    <string name="welcome_first_title">Welcome in Aeternity!</string>
+    <string name="welcome_first_checking">Checking network...</string>
+    <string name="welcome_activation_title">Aeternity need network!</string>
+    <string name="welcome_activation_message">Aeternity need the wifi to be activate as Access Point. Do you autorize
+        the app to modify the network configuration? (Don\'t worry, no device will be hurt during the process)
+    </string>
+    <string name="welcome_activation_activate">Activate!</string>
 </resources>
